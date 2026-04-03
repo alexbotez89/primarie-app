@@ -21,6 +21,7 @@ export default function TrimiteCererePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const [form, setForm] = useState<FormState>({
     citizen_name: "",
     citizen_email: "",
@@ -49,8 +50,6 @@ export default function TrimiteCererePage() {
         },
         body: JSON.stringify(form),
       });
-
-      console.log("RESPONSE STATUS:", res.status);
 
       const text = await res.text();
 
@@ -85,7 +84,7 @@ export default function TrimiteCererePage() {
         )}&email=${encodeURIComponent(form.citizen_email)}`
       );
     } catch (err) {
-      console.error("SUBMIT CATCH ERROR:", err);
+      console.error(err);
       setLoading(false);
       setError("A apărut o eroare la trimiterea formularului.");
     }
@@ -174,7 +173,7 @@ export default function TrimiteCererePage() {
           />
         </div>
 
-        {error ? <div className="text-sm text-red-600">{error}</div> : null}
+        {error ? <div className="text-red-600">{error}</div> : null}
 
         <button
           type="button"
