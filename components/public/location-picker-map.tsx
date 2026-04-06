@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import L from "leaflet";
-import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from "react-leaflet";
 
 function ClickHandler({
   onChange,
@@ -16,6 +17,24 @@ function ClickHandler({
       });
     },
   });
+
+  return null;
+}
+
+function RecenterMap({
+  latitude,
+  longitude,
+}: {
+  latitude: number | null;
+  longitude: number | null;
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (latitude !== null && longitude !== null) {
+      map.setView([latitude, longitude], 16);
+    }
+  }, [latitude, longitude, map]);
 
   return null;
 }
@@ -53,6 +72,7 @@ export default function LocationPickerMap({
       />
 
       <ClickHandler onChange={onChange} />
+      <RecenterMap latitude={latitude} longitude={longitude} />
 
       {latitude !== null && longitude !== null ? (
         <Marker position={[latitude, longitude]} icon={defaultIcon} />

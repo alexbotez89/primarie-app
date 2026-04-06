@@ -109,12 +109,12 @@ export default function TrimiteCererePage() {
   }
 
   return (
-    <main className="mx-auto max-w-4xl p-6">
+    <main className="mx-auto max-w-4xl p-4 md:p-6">
       <h1 className="mb-6 text-3xl font-semibold">Depune o cerere</h1>
 
       <div className="space-y-4 rounded-2xl border bg-white p-6">
         <input
-          className="w-full rounded-xl border p-3"
+          className="w-full rounded-xl border p-3 text-base"
           placeholder="Nume complet"
           value={form.citizen_name}
           onChange={(e) =>

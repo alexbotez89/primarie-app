@@ -36,9 +36,9 @@ function KpiCard({
   value: number;
 }) {
   return (
-    <div className="rounded-2xl border bg-white p-5">
+    <div className="rounded-2xl border bg-white p-4 md:p-5">
       <div className="text-sm text-slate-500">{title}</div>
-      <div className="mt-2 text-3xl font-semibold">{value}</div>
+      <div className="mt-2 text-2xl font-semibold md:text-3xl">{value}</div>
     </div>
   );
 }
@@ -80,8 +80,8 @@ export default function DashboardClient() {
   }
 
   return (
-    <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+    <div className="space-y-4 md:space-y-6">
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
         <KpiCard title="Cereri totale" value={data.kpis.totalRequests} />
         <KpiCard title="Cereri noi azi" value={data.kpis.newToday} />
         <KpiCard title="În lucru" value={data.kpis.inProgress} />
@@ -89,10 +89,12 @@ export default function DashboardClient() {
         <KpiCard title="Critice" value={data.kpis.critical} />
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-        <div className="rounded-2xl border bg-white p-6">
-          <h2 className="mb-4 text-xl font-semibold">Cereri în ultimele 7 zile</h2>
-          <div className="h-[320px]">
+      <section className="grid gap-4 md:gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+        <div className="rounded-2xl border bg-white p-4 md:p-6">
+          <h2 className="mb-4 text-lg font-semibold md:text-xl">
+            Cereri în ultimele 7 zile
+          </h2>
+          <div className="h-[260px] md:h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.dailyRequests}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -104,8 +106,9 @@ export default function DashboardClient() {
                       month: "2-digit",
                     })
                   }
+                  fontSize={12}
                 />
-                <YAxis />
+                <YAxis fontSize={12} />
                 <Tooltip
                   labelFormatter={(value) =>
                     new Date(String(value)).toLocaleDateString("ro-RO")
@@ -117,9 +120,11 @@ export default function DashboardClient() {
           </div>
         </div>
 
-        <div className="rounded-2xl border bg-white p-6">
-          <h2 className="mb-4 text-xl font-semibold">Distribuție pe status</h2>
-          <div className="h-[320px]">
+        <div className="rounded-2xl border bg-white p-4 md:p-6">
+          <h2 className="mb-4 text-lg font-semibold md:text-xl">
+            Distribuție pe status
+          </h2>
+          <div className="h-[260px] md:h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Tooltip />
@@ -127,8 +132,8 @@ export default function DashboardClient() {
                   data={data.statusDistribution}
                   dataKey="value"
                   nameKey="name"
-                  innerRadius={60}
-                  outerRadius={100}
+                  innerRadius={45}
+                  outerRadius={85}
                   paddingAngle={3}
                 >
                   {data.statusDistribution.map((entry, index) => (
@@ -141,9 +146,9 @@ export default function DashboardClient() {
         </div>
       </section>
 
-      <section className="rounded-2xl border bg-white p-6">
-        <h2 className="mb-4 text-xl font-semibold">Top categorii</h2>
-        <div className="h-[360px]">
+      <section className="rounded-2xl border bg-white p-4 md:p-6">
+        <h2 className="mb-4 text-lg font-semibold md:text-xl">Top categorii</h2>
+        <div className="h-[280px] md:h-[360px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data.categoryDistribution}
@@ -151,8 +156,13 @@ export default function DashboardClient() {
               margin={{ left: 24 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis type="category" dataKey="name" width={140} />
+              <XAxis type="number" fontSize={12} />
+              <YAxis
+                type="category"
+                dataKey="name"
+                width={120}
+                fontSize={12}
+              />
               <Tooltip />
               <Bar dataKey="value" radius={[0, 8, 8, 0]} />
             </BarChart>
