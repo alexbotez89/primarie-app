@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createRequestSchema } from "@/lib/validation/request";
 import { generateRequestCode } from "@/lib/utils/code";
+import { sendRequestCreatedEmail } from "@/lib/utils/email";
 
 export async function POST(request: Request) {
   try {
@@ -69,7 +70,16 @@ export async function POST(request: Request) {
       message: "Cererea a fost înregistrată în platformă.",
       is_public: true,
     });
-
+try {
+  await sendRequestCreatedEmail({
+    to: parsed.data.citizen_email,
+    citizenName: parsed.data.citizen_name,
+    code: created.code,
+    title: parsed.data.title,
+  });
+} catch (emailError) {
+  console.error("REQUEST CREATED EMAIL ERROR:", emailError);
+}
 return NextResponse.json({
   success: true,
   id: created.id,

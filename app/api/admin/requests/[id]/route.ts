@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
+import { sendStatusUpdatedEmail } from "@/lib/utils/email";
 
 const updateRequestSchema = z.object({
   status: z
@@ -64,7 +65,7 @@ export async function PATCH(
 
     const { data: existing, error: existingError } = await admin
       .from("requests")
-      .select("id, status, priority, estimated_resolution_date")
+      .select("id, code, title, status, priority, estimated_resolution_date, citizen_name, citizen_email")
       .eq("id", id)
       .single();
 
@@ -156,7 +157,22 @@ export async function PATCH(
     if (updatesToInsert.length > 0) {
       await admin.from("request_updates").insert(updatesToInsert);
     }
-
+if (
+  parsed.data.status !== undefined &&
+  parsed.data.status !== existing.status
+) {
+  try {
+    await sendStatusUpdatedEmail({
+      to: existing.citizen_email,
+      citizenName: existing.citizen_name,
+      code: existing.code,
+      title: existing.title,
+      status: parsed.data.status,
+    });
+  } catch (emailError) {
+    console.error("STATUS UPDATED EMAIL ERROR:", emailError);
+  }
+}
     return NextResponse.json({ success: true, request: updated });
   } catch {
     return NextResponse.json(
