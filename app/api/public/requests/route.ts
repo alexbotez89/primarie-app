@@ -70,11 +70,12 @@ export async function POST(request: Request) {
       is_public: true,
     });
 
-    return NextResponse.json({
-      success: true,
-      code: created.code,
-      status: created.status,
-      estimated_resolution_date: created.estimated_resolution_date,
+return NextResponse.json({
+  success: true,
+  id: created.id,
+  code: created.code,
+  status: created.status,
+  estimated_resolution_date: created.estimated_resolution_date,
     });
   } catch {
     return NextResponse.json(

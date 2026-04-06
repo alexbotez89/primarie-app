@@ -12,9 +12,9 @@ export default async function AdminRequestDetailPage({
   const admin = createAdminClient();
 
   const { data: request } = await admin
-    .from("requests")
-    .select(
-      `
+  .from("requests")
+  .select(
+    `
       id,
       code,
       citizen_name,
@@ -29,11 +29,16 @@ export default async function AdminRequestDetailPage({
       address,
       estimated_resolution_date,
       created_at,
-      updated_at
+      updated_at,
+      request_attachments (
+        id,
+        file_name,
+        public_url
+      )
     `
-    )
-    .eq("id", id)
-    .single();
+  )
+  .eq("id", id)
+  .single();
 
   const { data: updates } = await admin
     .from("request_updates")
@@ -94,7 +99,31 @@ export default async function AdminRequestDetailPage({
             </div>
           </div>
         </section>
+<div className="rounded-xl border p-4">
+  <div className="mb-2 font-medium">Fotografii atașate</div>
 
+  {request.request_attachments?.length ? (
+    <div className="grid gap-4 sm:grid-cols-2">
+      {request.request_attachments.map((attachment: any) => (
+        <a
+          key={attachment.id}
+          href={attachment.public_url}
+          target="_blank"
+          rel="noreferrer"
+          className="block overflow-hidden rounded-xl border"
+        >
+          <img
+            src={attachment.public_url}
+            alt={attachment.file_name}
+            className="h-48 w-full object-cover"
+          />
+        </a>
+      ))}
+    </div>
+  ) : (
+    <div className="text-sm text-slate-500">Nu există fotografii atașate.</div>
+  )}
+</div>
         <RequestDetailForm request={request} updates={updates ?? []} />
       </div>
     </main>

@@ -21,6 +21,7 @@ export default function TrimiteCererePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const [form, setForm] = useState<FormState>({
     citizen_name: "",
@@ -36,9 +37,6 @@ export default function TrimiteCererePage() {
   });
 
   async function handleSubmit() {
-    console.log("SUBMIT CLICKED");
-    console.log("FORM DATA:", form);
-
     setLoading(true);
     setError("");
 
@@ -60,9 +58,9 @@ export default function TrimiteCererePage() {
         data = { error: text || "Răspuns invalid de la server." };
       }
 
-      setLoading(false);
-
       if (!res.ok) {
+        setLoading(false);
+
         const message =
           data?.error?.fieldErrors?.citizen_name?.[0] ||
           data?.error?.fieldErrors?.citizen_email?.[0] ||
@@ -77,6 +75,26 @@ export default function TrimiteCererePage() {
         setError(message);
         return;
       }
+
+      if (imageFile && data?.id) {
+        const uploadFormData = new FormData();
+        uploadFormData.append("file", imageFile);
+
+        const uploadRes = await fetch(
+          `/api/public/requests/${data.id}/attachments`,
+          {
+            method: "POST",
+            body: uploadFormData,
+          }
+        );
+
+        if (!uploadRes.ok) {
+          const uploadText = await uploadRes.text();
+          console.error("UPLOAD ERROR:", uploadText);
+        }
+      }
+
+      setLoading(false);
 
       router.push(
         `/cetatean/tracking?code=${encodeURIComponent(
@@ -171,6 +189,21 @@ export default function TrimiteCererePage() {
               setForm({ ...form, latitude, longitude })
             }
           />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-medium">
+            Adaugă o fotografie
+          </label>
+          <input
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
+            className="w-full rounded-xl border p-3"
+          />
+          <div className="text-sm text-slate-500">
+            Formate acceptate: JPG, PNG, WEBP. Maxim 5MB.
+          </div>
         </div>
 
         {error ? <div className="text-red-600">{error}</div> : null}
