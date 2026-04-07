@@ -221,7 +221,7 @@ export function DemoPrimarieApp() {
             </div>
           </div>
         </motion.div>
-<div className="mb-6 flex flex-wrap gap-3">
+        <div className="mb-6 flex flex-wrap gap-3">
   <InstallPwaButton />
 </div>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
