@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import StatusBadge from "@/components/shared/status-badge";
+import PriorityBadge from "@/components/shared/priority-badge";
 
 type TrackingResponse = {
   request?: {
@@ -103,8 +105,14 @@ export default function TrackingClient() {
 
             <div className="mt-3 space-y-1 text-sm text-slate-600">
               <div><strong>Cod:</strong> {result.request.code}</div>
-              <div><strong>Status:</strong> {result.request.status}</div>
-              <div><strong>Prioritate:</strong> {result.request.priority}</div>
+             <div className="flex items-center gap-2">
+  <strong>Status:</strong>
+  <StatusBadge status={result.request.status} />
+</div>
+<div className="flex items-center gap-2">
+  <strong>Prioritate:</strong>
+  <PriorityBadge priority={result.request.priority} />
+</div>
               <div><strong>Categorie:</strong> {result.request.category}</div>
               <div><strong>Zonă:</strong> {result.request.district}</div>
               <div><strong>ETA:</strong> {result.request.estimated_resolution_date || "Nedefinit"}</div>

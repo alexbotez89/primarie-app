@@ -1,6 +1,8 @@
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { createAdminClient } from "@/lib/supabase/admin";
 import RequestDetailForm from "./request-detail-form";
+import StatusBadge from "@/components/shared/status-badge";
+import PriorityBadge from "@/components/shared/priority-badge";
 
 export default async function AdminRequestDetailPage({
   params,
@@ -49,7 +51,10 @@ export default async function AdminRequestDetailPage({
   if (!request) {
     return <main className="mx-auto max-w-4xl p-6">Cererea nu a fost găsită.</main>;
   }
-
+<div className="flex flex-wrap gap-2">
+  <StatusBadge status={request.status} />
+  <PriorityBadge priority={request.priority} />
+</div>
   return (
     <main className="mx-auto max-w-5xl p-6">
       <h1 className="mb-6 text-3xl font-semibold">Detaliu cerere</h1>

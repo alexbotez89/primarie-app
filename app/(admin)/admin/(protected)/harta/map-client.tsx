@@ -1,5 +1,6 @@
 "use client";
-
+import StatusBadge from "@/components/shared/status-badge";
+import PriorityBadge from "@/components/shared/priority-badge";
 import "leaflet/dist/leaflet.css";
 
 import { useEffect, useMemo, useState } from "react";
@@ -120,12 +121,10 @@ export default function MapClient() {
               <div className="text-sm text-slate-600">
                 <strong>Cod:</strong> {selected.code}
               </div>
-              <div className="text-sm text-slate-600">
-                <strong>Status:</strong> {selected.status}
-              </div>
-              <div className="text-sm text-slate-600">
-                <strong>Prioritate:</strong> {selected.priority}
-              </div>
+             <div className="flex flex-wrap gap-2">
+  <StatusBadge status={selected.status} />
+  <PriorityBadge priority={selected.priority} />
+</div>
               <div className="text-sm text-slate-600">
                 <strong>Categorie:</strong> {selected.category}
               </div>

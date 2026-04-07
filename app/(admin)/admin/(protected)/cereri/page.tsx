@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { createClient } from "@/lib/supabase/server";
+import StatusBadge from "@/components/shared/status-badge";
+import PriorityBadge from "@/components/shared/priority-badge";
 
 export default async function AdminCereriPage({
   searchParams,
@@ -109,8 +111,12 @@ export default async function AdminCereriPage({
                   </Link>
                 </td>
                 <td className="p-4">{item.title}</td>
-                <td className="p-4">{item.status}</td>
-                <td className="p-4">{item.priority}</td>
+<td className="p-4">
+  <StatusBadge status={item.status} />
+</td>
+<td className="p-4">
+  <PriorityBadge priority={item.priority} />
+</td>
                 <td className="p-4">{item.category}</td>
                 <td className="p-4">{item.district}</td>
                 <td className="p-4">
