@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import InstallPwaButton from "@/components/shared/install-pwa-button";
 import {
   AlertTriangle,
   BarChart3,
@@ -220,7 +221,9 @@ export function DemoPrimarieApp() {
             </div>
           </div>
         </motion.div>
-
+<div className="mb-6 flex flex-wrap gap-3">
+  <InstallPwaButton />
+</div>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-2 rounded-2xl border border-slate-200 bg-white p-1 shadow-sm md:grid-cols-4">
             <TabsTrigger value="portal" className="rounded-xl">Cereri cetățenești</TabsTrigger>

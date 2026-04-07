@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Demo Primărie",
-  description: "Portal cetățean și dashboard operațional pentru primării.",
+  title: "Primarie App",
+  description: "Platformă digitală pentru cereri cetățenești, tracking, dashboard și hartă operațională.",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="ro">
       <body>{children}</body>
